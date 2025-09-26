@@ -48,6 +48,17 @@ services:
                 - '-p${DB_PASSWORD}'
             retries: 3
             timeout: 5s
+
+    node-mock:
+      image: node:22-alpine
+      working_dir: /srv
+      volumes:
+        - ./node-service:/srv
+      command: sh -lc "npm install && node index.js"
+      ports:
+        - "3001:3001"
+      networks:
+        - sail
 networks:
     sail:
         driver: bridge
