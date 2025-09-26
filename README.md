@@ -1,4 +1,4 @@
-# cwi-test — Guia rápido (PT‑BR)
+# cwi-test — Guia rápido
 
 API simples em **Laravel** com **MySQL**, **Passport (M2M / Client Credentials)** e um mock **Node (Express)**.
 
