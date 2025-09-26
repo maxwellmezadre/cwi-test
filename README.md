@@ -1,4 +1,4 @@
-# cwi-test — Guia rápido
+# cwi-test — Guia rápido (PT‑BR)
 
 API simples em **Laravel** com **MySQL**, **Passport (M2M / Client Credentials)** e um mock **Node (Express)**.
 
@@ -11,41 +11,68 @@ API simples em **Laravel** com **MySQL**, **Passport (M2M / Client Credentials)*
 ## Pré‑requisitos
 - Docker + Docker Compose
 - Git
-- cURL ou Postman/Insomnia
+- **Composer** instalado localmente
 
 ---
 
-## Como rodar
+## 1) Clonar e instalar dependências
 
-1) **Subir os containers**
 ```bash
-./vendor/bin/sail up -d
+git clone https://github.com/maxwellmezadre/cwi-test.git
+cd cwi-test
+
+# copiar variáveis
+cp .env.example .env
+
+# instalar dependências
+composer install
+
+# gerar chave da aplicação
+php artisan key:generate
 ```
 
-2) **Rodar as migrações**
+> Se você não tiver PHP local, pode gerar a chave depois que subir o Sail usando:  
+> `./vendor/bin/sail artisan key:generate`
+
+---
+
+## 2) Subir os serviços e preparar o banco
+
 ```bash
+# subir containers (app, nginx, mysql, node mock)
+./vendor/bin/sail up -d
+
+# rodar migrações
 ./vendor/bin/sail artisan migrate
 ```
 
-3) **Criar um client M2M (Client Credentials)**
+---
+
+## 3) Passport (client_credentials)
+
 ```bash
+# instalar/inicializar chaves do Passport (se ainda não fez)
+./vendor/bin/sail artisan passport:install
+
+# criar um client M2M
 ./vendor/bin/sail artisan passport:client --client --name="cwi"
 ```
-Anote o **client_id** e o **client_secret**.
+
+Guarde o **client_id** e o **client_secret**.
 
 > Base URL padrão (Sail + Nginx): `http://localhost`  
 > Se mapeou porta (ex.: `8000:80`), use `http://localhost:8000`.
 
 ---
 
-## Gerar o access token (client_credentials)
+## 4) Gerar token (client_credentials)
 
 **Endpoint:** `POST /oauth/token`  
 **Headers:**  
 - `Accept: application/json`  
 - `Content-Type: application/x-www-form-urlencoded`
 
-**Scopes:**
+**Scopes disponíveis:**
 - `users.read` — listar/ver usuários
 - `users.write` — criar/editar/excluir usuários
 - `external.read` — chamar `/api/external`
@@ -61,9 +88,9 @@ Copie o `access_token` da resposta.
 
 ---
 
-## Usar o token nas rotas `/api`
+## 5) Consumir a API (`/api`)
 
-> Envie sempre: `Accept: application/json`  
+> Sempre envie: `Accept: application/json`  
 > Autenticação: `Authorization: Bearer <access_token>`
 
 ```bash
@@ -84,7 +111,7 @@ curl -X POST http://localhost/api/users \
   -H "Accept: application/json" \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
-  -d '{"name":"Max","email":"max@test.com","password":"password"}'
+  -d '{"name":"Max","email":"max@teste.com","password":"secret123"}'
 ```
 
 - **Mostrar** (users.read)
@@ -121,7 +148,7 @@ curl http://localhost/api/external \
 
 ---
 
-## Testes (Pest)
+## 6) Testes (Pest)
 
 Instalar (se necessário):
 ```bash
@@ -134,16 +161,4 @@ Rodar:
 ./vendor/bin/sail pest
 ```
 
----
-
-## Serviços úteis
-
-- App (Laravel): `http://localhost` (ou `http://localhost:8000` se mapeou `8000:80`)
-- Node mock (Express): `http://localhost:3001/ping`
-- MySQL: `localhost:3306`
-
-Ver portas:
-```bash
-docker ps --format "table {{.Names}}\t{{.Ports}}"
-```
 ---
