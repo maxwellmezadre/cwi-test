@@ -51,9 +51,6 @@ php artisan key:generate
 ## 3) Passport (client_credentials)
 
 ```bash
-# instalar/inicializar chaves do Passport (se ainda não fez)
-./vendor/bin/sail artisan passport:install
-
 # criar um client M2M
 ./vendor/bin/sail artisan passport:client --client --name="cwi"
 ```
