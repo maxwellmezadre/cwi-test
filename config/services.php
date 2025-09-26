@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    'external' => [
+        'url' => env('EXTERNAL_SERVICE_URL', 'http://node-mock:3001')
+    ],
 ];
