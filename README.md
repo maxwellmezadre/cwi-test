@@ -136,7 +136,7 @@ curl -X DELETE http://localhost/api/users/1 \
 
 ### External (Node mock)
 - **Chamar** (external.read)  
-  Retorna o JSON do mock em `http://node-mock:3001/ping`.
+  Retorna o JSON do mock em `http://localhost:3001/ping`.
 ```bash
 curl http://localhost/api/external \
   -H "Accept: application/json" \
