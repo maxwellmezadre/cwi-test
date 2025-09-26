@@ -57,8 +57,8 @@ php artisan key:generate
 
 Guarde o **client_id** e o **client_secret**.
 
-> Base URL padrão (Sail + Nginx): `http://localhost`  
-> Se mapeou porta (ex.: `8000:80`), use `http://localhost:8000`.
+> Base URL padrão: `http://localhost`  
+> Se mapeou porta (APP_PORT=8000), use `http://localhost:8000`.
 
 ---
 
@@ -146,12 +146,6 @@ curl http://localhost/api/external \
 ---
 
 ## 6) Testes (Pest)
-
-Instalar (se necessário):
-```bash
-./vendor/bin/sail composer require --dev pestphp/pest pestphp/pest-plugin-laravel
-./vendor/bin/sail artisan pest:install
-```
 
 Rodar:
 ```bash
